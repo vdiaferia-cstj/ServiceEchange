@@ -1,0 +1,24 @@
+{
+  "name": "serviceechange",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vdiaferia-cstj/ServiceEchange.git"
+  },
+  "author": "Vincent Diaferia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vdiaferia-cstj/ServiceEchange/issues"
+  },
+  "homepage": "https://github.com/vdiaferia-cstj/ServiceEchange#readme",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "express": "^4.18.1"
+  }
+}
