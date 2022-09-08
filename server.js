@@ -1,5 +1,4 @@
 import chalk from 'chalk';
-
 import app from './src/app.js';
 
 const PORT = 4200;
@@ -13,7 +12,7 @@ app.listen(PORT, err => {
 
 
 
-    console.log(chalk.blue('Server listenig on port ${PORT}'));
+    console.log(chalk.blue(`Server listenig on port ${PORT}`));
 });
 
 console.log(chalk.red.bgBlueBright('Test'));

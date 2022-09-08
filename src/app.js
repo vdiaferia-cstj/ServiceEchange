@@ -1,8 +1,13 @@
 import express from 'express';
 import dayjs from 'dayjs';
+import planetsRoutes from './routes/planets-routes.js'
+
+
 const app = express();
 
 //TODO: Ajouter du code ici
+
+
 
 app.get('/deuxieme',(req,res)=>{
     res.status(200)
@@ -48,5 +53,7 @@ switch (operation) {
     res.send(somme.toString);
     
 });
+
+app.get('/planets',planetsRoutes);
 
 export default app;
