@@ -1,7 +1,7 @@
 import express from 'express';
 import dayjs from 'dayjs';
 import planetsRoutes from './routes/planets-routes.js'
-
+import errors from './middlewares/error.js'
 
 const app = express();
 
@@ -54,6 +54,8 @@ switch (operation) {
     
 });
 
-app.get('/planets',planetsRoutes);
+app.use('/planets',planetsRoutes);
+
+app.use(errors)
 
 export default app;
