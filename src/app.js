@@ -2,7 +2,10 @@ import express from 'express';
 import dayjs from 'dayjs';
 import planetsRoutes from './routes/planets-routes.js'
 import errors from './middlewares/error.js'
+import database from './libs/database.js';
 
+
+database();
 const app = express();
 app.use(express.json()); // Permet à notre serveur de comprendre le json reçu
 //TODO: Ajouter du code ici
