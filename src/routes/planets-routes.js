@@ -23,14 +23,19 @@ deleteOne(req,res,next){
     res.status(204).end();
 }
 
-    getAll(req, res , next){
+
+
+getAll(req, res , next){
         res.status(200);
        
         res.json(PLANETS);
-    }
+     }
+
+
+
 
     // /planets/400
-    getOne(req,res ,next)  {
+ getOne(req,res ,next)  {
 
         
        /* for(let planet of PLANETS){
@@ -55,7 +60,26 @@ deleteOne(req,res,next){
         }
     }
 
-    post (req,res,next)    {}
+post (req,res,next){
+const newPlanet = req.body;
+
+if (newPlanet) {
+    const index = PLANETS.findIndex( p => p.id === req.body.id);
+    if (index === -1) { // si la planète existe pas déjà
+        
+    PLANETS.push(newPlanet); // push la nouvelle planète dans la liste de planètes
+    res.status(201).json(newPlanet);
+
+    } else { // si ça marche pas
+        return next(HttpError.Conflict(`Une planète avec l'indentifiant ${newPlanet.id}`));
+    }
+}
+
+else{
+return next(HttpError.BadRequest('Aucune information transmise'));
+}
+
+}
 }
 
 new PlanetsRoutes();

@@ -4,7 +4,7 @@ import planetsRoutes from './routes/planets-routes.js'
 import errors from './middlewares/error.js'
 
 const app = express();
-
+app.use(express.json()); // Permet à notre serveur de comprendre le json reçu
 //TODO: Ajouter du code ici
 
 
@@ -55,6 +55,7 @@ switch (operation) {
 });
 
 app.use('/planets',planetsRoutes);
+
 
 app.use(errors)
 
