@@ -1,6 +1,7 @@
 import express from 'express';
 import { HttpError } from 'http-errors';
 import PLANETS from '../data/planets.js';
+import planetsRepository from '../repositories/planets-repository.js'
 const routeur = express.Router();
 
 class PlanetsRoutes{
@@ -25,58 +26,55 @@ deleteOne(req,res,next){
 
 
 
-getAll(req, res , next){
-        res.status(200);
+async getAll(req, res , next){
        
-        res.json(PLANETS);
+        try {
+            const planets =  await planetsRepository.retrieveAll();
+            console.log(planets);
+            res.status(200).json(planets);
+        }catch(err) {
+            return next(err);
+        }
      }
 
-
-
-
     // /planets/400
- getOne(req,res ,next)  {
+ async getOne(req,res ,next)  {
+    try
+    {
+        let planet = await planetsRepository.retrieveOne(req.params.idPlanet);
 
-        
-       /* for(let planet of PLANETS){
-            if (planet.id === idPlanet)
-            //Trouver la planète recherchée
-            res.status(200);
-            res.json(planet);
-            break;
-        }
-        res.status(404);
-        res.end();
-        */
-       const idPlanet = parseInt(req.params.idPlanet,10);
-        const planet = PLANETS.filter((p) => p.id === idPlanet);
-        if (planet.length > 0) {
-            res.status(200);
-            res.json(planet[0]);
-        }
-        else{
-        return next(HttpError.NotFound(`La planète avec l'identifiant ${idPlanet} n'existe pas`));
-
-        }
+    if (!planet) {
+        return next(HttpError.NotFound(`La planète avec l'identifiant ${req.params.idPlanet} n'existe pas.`));
+            
+    }
+    // Transformer/Nettoyer l'objet avant de l'envoyer dans la réponse
+    planet = planet.toObject({getters:false, virtuals:false});
+    planet = planetsRepository.transform(planet);
+    res.status(200).json(planet);
+    } 
+    catch(err)
+     {
+        return next(err);
+    }
     }
 
-post (req,res,next){
-const newPlanet = req.body;
+async post (req,res,next){
+try 
+{
+    //TODO: Validation S08
+    let newPlanet = await planetsRepository.create(req.body);
 
-if (newPlanet) {
-    const index = PLANETS.findIndex( p => p.id === req.body.id);
-    if (index === -1) { // si la planète existe pas déjà
-        
-    PLANETS.push(newPlanet); // push la nouvelle planète dans la liste de planètes
+    newPlanet = newPlanet.toObject ({getters:false, virtuals:false});
+    newPlanet = await planetsRepository.transform(newPlanet);
+
     res.status(201).json(newPlanet);
+    
 
-    } else { // si ça marche pas
-        return next(HttpError.Conflict(`Une planète avec l'indentifiant ${newPlanet.id}`));
-    }
 }
 
-else{
-return next(HttpError.BadRequest('Aucune information transmise'));
+catch(err)
+{
+return next(err);
 }
 
 }
